@@ -1,4 +1,4 @@
-# cannibal_missionary
+# Cannibal and Missionary
 
 Project with the objective of solving the cannibals and missionaries problem through the use of breadth first search
 
