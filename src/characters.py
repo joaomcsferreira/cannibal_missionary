@@ -7,7 +7,7 @@ class Character:
         self.screen = screen
         self.position = position
 
-        self.chracter = character
+        self.character = character
         self.character_surface = pygame.image.load(f'{getcwd()}/static/images/{character}.png')
 
     def change_position(self, position):
@@ -17,4 +17,4 @@ class Character:
         self.screen.blit(self.character_surface, self.position)
 
     def type(self):
-        return self.chracter
+        return self.character
