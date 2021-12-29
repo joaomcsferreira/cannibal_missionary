@@ -46,11 +46,6 @@ class Graph:
 
         return elem
 
-    def get_node(self, elem):
-        for i in self.nodes:
-            if i.value == elem:
-                return i
-
     def get_path(self, origin):
         last = self.nodes[-1]
 
@@ -58,7 +53,7 @@ class Graph:
 
         while last.value != str(self.nodes[0]):
             path.append(last.value)
-            last = self.get_node(last.father)
+            last = last.father
 
         path.append(origin)
 
@@ -81,5 +76,4 @@ def bfs(origin, destiny):
         adjacents = sorted(current_node.get_adjacents())
 
         for adjacent in adjacents:
-            path.push(Node(adjacent, current_node.value))
-
+            path.push(Node(adjacent, current_node))
