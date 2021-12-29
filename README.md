@@ -2,7 +2,7 @@
 
 Project with the objective of solving the cannibals and missionaries problem through the use of breadth first search
 
-### Requirements
+### Done with
 <table>
   <tr>
     <td>Python version</td>
@@ -18,6 +18,11 @@ Project with the objective of solving the cannibals and missionaries problem thr
   </tr>
 </table>
 
+## Prerequisites
+```bash
+python 3
+```
+
 ## Getting started
 ```bash
 # clone the project
@@ -27,7 +32,7 @@ git clone https://github.com/Joao-MCF/cannibal_missionary.git
 cd cannibal_missionary
 
 # install python requirements
-pip install -r requirements.txt
+pip3 install -r requirements.txt
 
 # run the project
 python3 game.py
