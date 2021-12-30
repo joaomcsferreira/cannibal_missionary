@@ -1,3 +1,7 @@
+
+# By: João Marcos Costa Ferreira
+#     Antonio Rodrigues dos Santos Junior
+
 import pygame
 
 from src.characters import *
