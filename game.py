@@ -6,6 +6,18 @@ from src.bfs import bfs
 
 class Game:
     def __init__(self) -> None:
+        """
+            Definições iniciais do pygame
+
+            width, height -> representa os valores do tamanho da janela
+            FPS -> representa a taxa de quadro do jogo
+            game_over -> representa o estado atual do jogo, utilizado para manter o loop principal
+            position -> representa os locais disponiveis nos dois lados e na jangada
+            right_side -> armazena os objetos, canibais ou missionarios, que estão no lado direito do rio
+            left_side -> armazena os objetos, que estaõ no lado esquerdo do rio
+            current_raft -> armazena os objetos que estão atualmente utiizando a jangada
+            raft -> representa o objeto jangada
+        """
         pygame.init()
         pygame.display.set_caption('Cannibal and Missionaries')
 
@@ -28,13 +40,16 @@ class Game:
         self.raft = Character(self.screen, (600, 420), 'raft')
 
     def check_events(self):
-        """ Function that checks events coming from the keyboard """
+        """ Função que verifica eventos do teclado """
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 self.game_over = True
                 exit()
 
     def reset(self):
+        """
+            Função responsavel por inicializar as posições iniciais de todos os elementos da tela
+        """
         self.position = {'right': [(930, 210), (860, 290), (940, 310), (980, 400), (860, 470), (960, 500)],
                          'left': [(210, 210), (150, 280), (20, 340), (310, 220), (80, 250), (5, 450)],
                          'raft': [(620, 330), (700, 320)]}
@@ -49,6 +64,9 @@ class Game:
                           'missionary': []}
 
     def render_cannibal_missionary(self):
+        """
+            Renderiza canibais e missionarios nos dois lados do rio
+        """
         for i in self.right_side.values():
             for j in i:
                 j.render()
@@ -58,12 +76,18 @@ class Game:
                 j.render()
 
     def render_everything(self):
+        """
+            Renderiza o fundo e a jangada
+        """
         self.screen.blit(self.background, (0, 0))
 
         self.raft.render()
     
     def choice_position_land(self, side):
-        # da raft para a terra
+        """
+            responsavel por escolher uma posição disponivel em um dos lado do rio
+            retorna uma posição disponivel na "terra" para um objeto
+        """
         if side == 'r':
             position = self.position['left'].pop(0)
             return position
@@ -79,21 +103,15 @@ class GameMain(Game):
     def run_game(self):
 
         self.reset()
+
+        # iniciamos a função que vai procurar o melhor caminho possivel dando a origem e o destino
         states = bfs('00r33', '33l00')
-
-        # Sets speed of frame
-        self.FPS.tick(20)
-
-        # Check keyboard events
-        self.check_events()
 
         self.game(states)
 
         while not self.game_over:
-            # Sets speed of frame
-            self.FPS.tick(20)
 
-            # Check keyboard events
+            # Verifica eventos do teclado
             self.check_events()
 
             self.screen.fill((0, 0, 0))
@@ -111,21 +129,34 @@ class GameMain(Game):
             pygame.display.update()
 
     def choice_position_raft(self):
+        """
+            Responsavel por retornar uma posição disponivel na jangada
+        """
         position = self.position['raft'].pop(0)
 
         return position
     
     def game(self, states):
+        """
+            Realiza a animação
+        """
         self.render_everything()
         self.render_cannibal_missionary()
 
         pygame.display.update()
         pygame.time.wait(250)
 
+        # realizamos um for para cada passo necessario
         for s in range(len(states) - 1):
+
+            # guarda o lado que a jangada esta
             side = states[s][2]
+
+            # calcula a quantidade de canibais e missionarios que vão ser 
+            # transportados para o outro lado, exemplor: (1, 0) = 1 canibal, 0 missionario
             step = (abs(int(states[s][3]) - int(states[s + 1][3])), abs(int(states[s][4]) - int(states[s + 1][4])))
 
+            # verficamos o lado que a jangada esta e então verificamos a quantidade de canibais e missionarios
             if side == 'r':
                 for i in range(step[0]):
                     cannibal = self.right_side['cannibal'][0]
@@ -185,6 +216,9 @@ class GameMain(Game):
             pygame.time.wait(250)
 
     def move(self, side):
+        """
+            Resposavel por realizar a animação da jangada com os e os elementos que estão na jangada
+        """
         if side == 'l':
 
             while self.raft.position < (600, 420):
@@ -222,6 +256,10 @@ class GameMain(Game):
         pygame.time.wait(250)
 
     def next_move(self, side):
+        """
+            Responsavel por realizar retirada dos elementos que estavam na jangada e 
+            agora precisam ir para terra quando a animação de atravessar o rio acaba
+        """
 
         if side == 'r':
             for character in self.current_raft:
@@ -255,10 +293,8 @@ class GameLoad(Game):
     def run_game(self):
         self.reset()
         while not self.game_over:
-            # Sets speed of frame
-            self.FPS.tick(20)
 
-            # Check keyboard events
+            # Verifica eventos do teclado
             self.check_events()
 
             self.screen.fill((0, 0, 0))
