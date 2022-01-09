@@ -1,7 +1,3 @@
-
-# By: João Marcos Costa Ferreira
-#     Antonio Rodrigues dos Santos Junior
-
 from re import search
 
 

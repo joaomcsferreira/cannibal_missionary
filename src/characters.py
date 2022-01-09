@@ -1,7 +1,4 @@
 
-# By: João Marcos Costa Ferreira
-#     Antonio Rodrigues dos Santos Junior
-
 import pygame
 from os import getcwd
 
